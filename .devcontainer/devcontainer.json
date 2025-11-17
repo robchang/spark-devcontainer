@@ -1,0 +1,31 @@
+{
+  "name": "WAN Video Generation Dev Container",
+  "image": "nvcr.io/nvidia/tensorrt-llm/release:spark-single-gpu-dev",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "saoudrizwan.claude-dev"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/bin/python3.12"
+      }
+    }
+  },
+  "remoteUser": "root",
+  "runArgs": [
+    "--gpus",
+    "all",
+    "--network=host"
+  ],
+  "postCreateCommand": "python3.12 -m pip install --upgrade pip",
+  "portsAttributes": {
+    "7860": {
+      "label": "Gradio App",
+      "onAutoForward": "notify"
+    }
+  },
+  "forwardPorts": [7860]
+}

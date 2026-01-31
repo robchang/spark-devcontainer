@@ -1,31 +1,35 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
-  "name": "WAN Video Generation Dev Container",
-  "image": "nvcr.io/nvidia/tensorrt-llm/release:spark-single-gpu-dev",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-toolsai.jupyter",
-        "saoudrizwan.claude-dev"
-      ],
-      "settings": {
-        "python.defaultInterpreterPath": "/usr/bin/python3.12"
-      }
-    }
-  },
-  "remoteUser": "root",
-  "runArgs": [
-    "--gpus",
-    "all",
-    "--network=host"
-  ],
-  "postCreateCommand": "python3.12 -m pip install --upgrade pip",
-  "portsAttributes": {
-    "7860": {
-      "label": "Gradio App",
-      "onAutoForward": "notify"
-    }
-  },
-  "forwardPorts": [7860]
+	"name": "NVIDIA TensorRT-LLM + llama.cpp",
+	// Build from custom Dockerfile with llama.cpp pre-built
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	// GPU passthrough
+	"runArgs": ["--gpus", "all"],
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": false,
+			"configureZshAsDefaultShell": false,
+			"username": "vscode",
+			"userUid": "automatic",
+			"userGid": "automatic"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"nodeGypDependencies": true,
+			"version": "lts",
+			"pnpmVersion": "latest",
+			"nvmVersion": "latest"
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "bash -lc 'command -v claude >/dev/null 2>&1 || (curl -fsSL https://claude.ai/install.sh | bash); claude --version || true'",
+
+	// Connect as non-root user with sudo access
+	"remoteUser": "vscode"
 }

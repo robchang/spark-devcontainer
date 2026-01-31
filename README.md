@@ -1,5 +1,5 @@
 # spark-devcontainer
-Devcontainer template for DGX-Spark development. Includes necessary CUDA libraries, python, node libraries.
+Devcontainer template for DGX-Spark development. Includes necessary CUDA libraries, python, node libraries. Includes llama.cpp build, Claude code vscode extension. 
 
 ## Project Name
 

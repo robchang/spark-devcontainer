@@ -8,19 +8,32 @@
 	},
 	// GPU passthrough
 	"runArgs": ["--gpus", "all"],
-	"features": {
-		"ghcr.io/devcontainers/features/common-utils:2": {
-			"installZsh": false,
-			"configureZshAsDefaultShell": false,
-			"username": "vscode",
-			"userUid": "automatic",
-			"userGid": "automatic"
+	// Mount host cache directories to container
+	"mounts": [
+		{
+			"type": "bind",
+			"source": "${localEnv:HOME}/.cache/huggingface",
+			"target": "/home/vscode/.cache/huggingface"
 		},
+		{
+			"type": "bind",
+			"source": "${localEnv:HOME}/.cache/llama.cpp",
+			"target": "/home/vscode/.cache/llama.cpp"
+		}
+	],
+	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"nodeGypDependencies": true,
 			"version": "lts",
 			"pnpmVersion": "latest",
 			"nvmVersion": "latest"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"anthropics.claude-code"
+			]
 		}
 	},
 

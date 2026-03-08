@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/tensorrt-llm/release:spark-single-gpu-dev
+FROM nvcr.io/nvidia/tensorrt-llm/release:1.2.0rc6
 
 # Install sudo and create vscode user with sudo access
 RUN apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/* && \
@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/* && 
     fi && \
     usermod -aG sudo vscode && \
     echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Pre-create cache directory with correct ownership (bind mounts may create it as root)
+RUN mkdir -p /home/vscode/.cache && chown vscode:vscode /home/vscode/.cache
 
 # Set environment variables
 ENV PYTHONPATH=/workspace
